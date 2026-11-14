@@ -447,9 +447,9 @@ pub use self::{cfg_has_atomic_128 as cfg_has_atomic_ptr, cfg_no_atomic_128 as cf
 // addition of 128-bit targets in mind.)
 // Note that Rust (and C99) pointers must be at least 16-bit (i.e., 8-bit targets are impossible): https://github.com/rust-lang/rust/pull/49305
 #[cfg(not(any(
-    target_pointer_width = "16",
-    target_pointer_width = "32",
-    target_pointer_width = "64",
+    target_address_width = "16",
+    target_address_width = "32",
+    target_address_width = "64",
 )))]
 compile_error!(
     "portable-atomic currently only supports targets with {16,32,64}-bit pointer width; \
@@ -4803,17 +4803,17 @@ This is `const fn` on Rust 1.58+."),
 }
 
 cfg_has_atomic_ptr! {
-    #[cfg(target_pointer_width = "16")]
+    #[cfg(target_address_width = "16")]
     atomic_int!(AtomicIsize, isize, 2, cfg_has_atomic_cas_or_amo8, cfg_no_atomic_cas_or_amo8);
-    #[cfg(target_pointer_width = "16")]
+    #[cfg(target_address_width = "16")]
     atomic_int!(AtomicUsize, usize, 2, cfg_has_atomic_cas_or_amo8, cfg_no_atomic_cas_or_amo8);
-    #[cfg(target_pointer_width = "32")]
+    #[cfg(target_address_width = "32")]
     atomic_int!(AtomicIsize, isize, 4, cfg_has_atomic_cas_or_amo32, cfg_no_atomic_cas_or_amo32);
-    #[cfg(target_pointer_width = "32")]
+    #[cfg(target_address_width = "32")]
     atomic_int!(AtomicUsize, usize, 4, cfg_has_atomic_cas_or_amo32, cfg_no_atomic_cas_or_amo32);
-    #[cfg(target_pointer_width = "64")]
+    #[cfg(target_address_width = "64")]
     atomic_int!(AtomicIsize, isize, 8, cfg_has_atomic_cas_or_amo32, cfg_no_atomic_cas_or_amo32);
-    #[cfg(target_pointer_width = "64")]
+    #[cfg(target_address_width = "64")]
     atomic_int!(AtomicUsize, usize, 8, cfg_has_atomic_cas_or_amo32, cfg_no_atomic_cas_or_amo32);
     #[cfg(target_pointer_width = "128")]
     atomic_int!(AtomicIsize, isize, 16, cfg_has_atomic_cas_or_amo32, cfg_no_atomic_cas_or_amo32);
@@ -5139,7 +5139,7 @@ mod diagnostic_helper {
     pub trait HasNeg {}
     cfg_no_atomic_cas_or_amo32! {
     #[cfg(feature = "float")]
-    #[cfg_attr(target_pointer_width = "16", allow(dead_code, unreachable_pub))]
+    #[cfg_attr(target_address_width = "16", allow(dead_code, unreachable_pub))]
     #[doc(hidden)]
     #[cfg_attr(
         not(portable_atomic_no_diagnostic_namespace),
